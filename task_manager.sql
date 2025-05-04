@@ -1,27 +1,28 @@
-CREATE DATABASE TaskManagerDB;
+-- Task Manager Database Schema
+CREATE DATABASE IF NOT EXISTS TaskManagerDB;
 USE TaskManagerDB;
 
 CREATE TABLE Users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Email VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE Tasks (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    description TEXT,
-    status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
-    due_date DATE,
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
+    TaskID INT AUTO_INCREMENT PRIMARY KEY,
+    UserID INT NOT NULL,
+    Title VARCHAR(100) NOT NULL,
+    Description TEXT,
+    Status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    DueDate DATE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
-INSERT INTO Users (username, email) VALUES
+INSERT INTO Users (Username, Email) VALUES
 ('john_doe', 'john@example.com'),
 ('jane_smith', 'jane@example.com');
 
-INSERT INTO Tasks (title, description, status, due_date, user_id) VALUES
-('Finish report', 'Complete the annual report', 'In Progress', '2025-05-10', 1),
-('Team meeting', 'Discuss project updates', 'Pending', '2025-05-06', 1),
-('Code review', 'Review the new feature branch', 'Completed', '2025-05-02', 2);
+INSERT INTO Tasks (UserID, Title, Description, Status, DueDate) VALUES
+(1, 'Finish project report', 'Complete the final project report', 'In Progress', '2025-05-10'),
+(1, 'Team meeting', 'Discuss project deliverables', 'Pending', '2025-05-06'),
+(2, 'Review code', 'Go through the new feature branch', 'Completed', '2025-05-02');
